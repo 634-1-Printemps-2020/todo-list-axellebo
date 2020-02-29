@@ -1,10 +1,11 @@
 package task;
 
 import creator.Creator;
+import exception.ExceptionTask;
 
 import java.util.Date;
 
-public class Task implements ITask{
+public class Task{
 
     private Creator creator;
     private String description;
@@ -12,41 +13,31 @@ public class Task implements ITask{
     private EnumStatus status;
     private EnumResolution resolution;
 
-    @Override
-    public void createTask(Creator createur, String description, Date date, EnumStatus status) {
-        this.creator = createur;
+    public Task(Creator creator, String description, Date date, EnumStatus status) throws ExceptionTask {
+        if(new Date().compareTo(date)<0){throw new ExceptionTask("Erreur de date, date inscrite : "+date+" date du jour"+ new Date());}
+        this.creator = creator;
         this.description = description;
         this.date = date;
         this.status = status;
     }
 
-    @Override
-    public void cancelTask() {
-        this.status = EnumStatus.CANCELED;
+    public void changeStatue(EnumStatus status) throws ExceptionTask {
+        if(this.status.equals(status)){
+            throw new ExceptionTask("Impossible de changer le status de cette tâche car elle est déjà de ce status, status de la tâche :"+ this.status+" nouveau status :"+status);
+        }
+        this.status=status;
     }
 
-    @Override
-    public void rescheduleTask(Date date) {
-        this.date = date;
+    public void rescheduleTask(Date date) throws ExceptionTask {
+        if(new Date().compareTo(date)<0){throw new ExceptionTask("Modification de la date impossible, date inscrite : "+date+" date du jour"+ new Date());}
+        this.date=date;
     }
 
-    @Override
-    public Task viewTask() {
-        return null;
+    public EnumStatus getStatus(){
+        return this.status;
     }
 
-    @Override
-    public Task viewTask(EnumStatus status) {
-        return null;
-    }
-
-    @Override
-    public Task viewTask(Date date) {
-        return null;
-    }
-
-    @Override
-    public Task viewTask(EnumStatus status, Date date) {
-        return null;
+    public Date getDateTask(){
+        return this.date;
     }
 }

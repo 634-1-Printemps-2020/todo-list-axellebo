@@ -1,21 +1,24 @@
 package task;
 
 import creator.Creator;
+import exception.ExceptionGestionTaches;
+import exception.ExceptionTask;
 
 import java.util.Date;
+import java.util.List;
 
 public interface ITask {
-    void createTask(Creator createur, String description, Date date, EnumStatus status);
+    void createTask(Creator createur, String description, Date date, EnumStatus status) throws ExceptionTask;
 
-    void cancelTask();
+    void cancelTask(Task task) throws ExceptionTask, ExceptionGestionTaches;
 
-    void rescheduleTask(Date date);
+    void rescheduleTask(Task task, Date date) throws ExceptionTask, ExceptionGestionTaches;
 
-    Task viewTask();
+    List<Task> viewTask();
 
-    Task viewTask(EnumStatus status);
+    List<Task> viewTask(EnumStatus status);
 
-    Task viewTask(Date date);
+    List<Task> viewTask(Date date);
 
-    Task viewTask(EnumStatus status, Date date);
+    List<Task> viewTask(EnumStatus status, Date date);
 }
